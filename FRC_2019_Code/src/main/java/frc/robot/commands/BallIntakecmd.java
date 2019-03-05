@@ -19,14 +19,22 @@ public class BallIntakecmd extends Command {
 
     }
 
+
     @Override 
     protected void execute()
     {
-        Robot.m_BallIntake.BallDrive(Robot.m_oi.joystick.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_Out)-Robot.m_oi.joystick.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_In));
-        System.out.println("Intake: " + (Robot.m_oi.joystick.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_Out)));
-
+        Robot.m_BallIntake.BallDrive(Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_In)-Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_Out));
+        //System.out.println("Intake: " + (Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_Out)));
+        if(Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_In)-Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_Out) < 0 ){
+            Robot.m_BallIntake.CurrntLimitFalse(); 
+        }
+        else{
+            Robot.m_BallIntake.CurrntLimitTrue();  
+        }
+        //lower while intakeing
     }
 
+    
     @Override 
     protected boolean isFinished()
     {
@@ -34,11 +42,11 @@ public class BallIntakecmd extends Command {
     }
 
 
-
     @Override 
     protected void end(){       
         Robot.m_BallIntake.BallDrive(0);
     }
+
 
     @Override 
     protected void interrupted()

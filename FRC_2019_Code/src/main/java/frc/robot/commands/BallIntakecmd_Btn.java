@@ -4,45 +4,30 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 import frc.robot.Robot;
 
-public class DriveArcade extends Command {
+public class BallIntakecmd_Btn extends Command {
 
-    public DriveArcade()
+
+    public BallIntakecmd_Btn()
     {
-        requires(Robot.m_drivetrain);
+        requires(Robot.m_BallIntake);
     }
 
 
     @Override 
     protected void initialize()
     {
-        
+
     }
+
 
     @Override 
     protected void execute()
     {
-        double moveSpeed = -Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_MOVE_AXIS);
-        double rotateSpeed = Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_AXIS);
-
-        //System.out.println("Sensor Vel:" + leftSlave1Talon.getSelectedSensorVelocity());
-        //System.out.println("Sensor Pos:" + leftSlave1Talon.getSelectedSensorPosition());
-        //System.out.println("Out %" + leftSlave1Talon.getMotorOutputPercent());
-       // System.out.println(moveSpeed);
-
-	    if (Math.abs(moveSpeed) < 0.10) {
-			// within 10% joystick, make it zero 
-		moveSpeed = 0;
-		}
-		if (Math.abs(rotateSpeed) < 0.13) {
-			// within 10% joystick, make it zero 
-			rotateSpeed = 0;
-		}
-
-        Robot.m_drivetrain.arcadeDrive(moveSpeed,rotateSpeed);
-        //System.out.println(moveSpeed);
-        //System.out.println("rotate" + rotateSpeed);
+        Robot.m_BallIntake.BallDrive(1);
+        //System.out.println("Intake: " + (Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_INTAKE_Out)));
     }
 
+    
     @Override 
     protected boolean isFinished()
     {
@@ -52,10 +37,10 @@ public class DriveArcade extends Command {
 
     @Override 
     protected void end(){       
-        Robot.m_drivetrain.arcadeDrive(0,0);
+        Robot.m_BallIntake.BallDrive(0);
     }
 
-    
+
     @Override 
     protected void interrupted()
     {

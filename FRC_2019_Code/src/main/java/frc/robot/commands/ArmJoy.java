@@ -1,46 +1,45 @@
-
 package frc.robot.commands;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 import frc.robot.Robot;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveArcade extends Command {
+public class ArmJoy extends Command {
 
-    public DriveArcade()
+    private WPI_TalonSRX armMotorMaster = Robot.m_arm.getArmTalon();
+    private static int loop = 0;
+
+    public ArmJoy()
     {
-        requires(Robot.m_drivetrain);
+        requires(Robot.m_arm);
     }
 
 
     @Override 
     protected void initialize()
     {
-        
+
     }
+
 
     @Override 
     protected void execute()
     {
-        double moveSpeed = -Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_MOVE_AXIS);
-        double rotateSpeed = Robot.m_oi.Controller.getRawAxis(RobotMap.DRIVER_CONTROLLER_ROTATE_AXIS);
+        double armPosition = Robot.m_oi.Controller2.getRawAxis(RobotMap.DRIVER_CONTROLLER2_ARM_AXIS)*.5;
+        if (Math.abs(armPosition) < 0.10) { armPosition = 0;}
+        Robot.m_arm.armDrive(armPosition);
+        
+        if (++loop >= 40) {
+			loop = 0;
+        //System.out.println("Sensor Vel:" + armMotorMaster.getSelectedSensorVelocity());
+        // System.out.println("Sensor Pos:" + armMotorMaster.getSelectedSensorPosition());
 
-        //System.out.println("Sensor Vel:" + leftSlave1Talon.getSelectedSensorVelocity());
-        //System.out.println("Sensor Pos:" + leftSlave1Talon.getSelectedSensorPosition());
-        //System.out.println("Out %" + leftSlave1Talon.getMotorOutputPercent());
-       // System.out.println(moveSpeed);
-
-	    if (Math.abs(moveSpeed) < 0.10) {
-			// within 10% joystick, make it zero 
-		moveSpeed = 0;
-		}
-		if (Math.abs(rotateSpeed) < 0.13) {
-			// within 10% joystick, make it zero 
-			rotateSpeed = 0;
-		}
-
-        Robot.m_drivetrain.arcadeDrive(moveSpeed,rotateSpeed);
-        //System.out.println(moveSpeed);
-        //System.out.println("rotate" + rotateSpeed);
+        }
+       
+        SmartDashboard.putNumber("Sensor Vel", armMotorMaster.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Sensor Pos:", armMotorMaster.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Out %", armMotorMaster.getMotorOutputPercent());
     }
 
     @Override 
@@ -52,7 +51,7 @@ public class DriveArcade extends Command {
 
     @Override 
     protected void end(){       
-        Robot.m_drivetrain.arcadeDrive(0,0);
+        Robot.m_arm.armDrive(0);
     }
 
     

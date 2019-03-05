@@ -1,9 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -12,6 +6,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
+import frc.robot.commands.Autonomous2;
+import frc.robot.commands.Autonomous_Sand;
+import frc.robot.commands.Autonomous1;
 import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.BallIntake;
 import frc.robot.subsystems.BallPiston;
@@ -67,8 +64,12 @@ public class Robot extends TimedRobot {
 
 		m_chooser.addDefault("Default Auto", new Autonomous());
 		SmartDashboard.putData("Auto mode", m_chooser);
-
-		
+		m_chooser.addOption("Sand Storm", new Autonomous_Sand());
+		SmartDashboard.putData("Auto mode", m_chooser);
+		m_chooser.addOption("Autonomus 1", new Autonomous1());
+		SmartDashboard.putData("Auto mode", m_chooser);
+		m_chooser.addOption("Autonomus 2", new Autonomous2());
+		SmartDashboard.putData("Auto mode", m_chooser);
 
 
 	}
@@ -104,15 +105,17 @@ public class Robot extends TimedRobot {
 		m_autonomousCommand = m_chooser.getSelected();
 
 		
-		//   String autoSelected = SmartDashboard.getString("Auto Selector","Default");
-		//   switch(autoSelected) {
-		// 	case "My Auto": autonomousCommand = new DriveArcade();
-		// 		break; 
-		// 		case "My Auto": autonomousCommand = new DriveLimeLight();
-		// 		break; 
-		// 	case "Default Auto": default:
-		//   autonomousCommand = new ExampleCommand(); break; }
-		 
+		//    String autoSelected = SmartDashboard.getString("Auto Selector","Default");
+		//    switch(autoSelected) {
+		//  	case "My Auto": autonomousCommand = new Autonomous();
+		//  		break; 
+		//  	case "Autonomus2": autonomousCommand = new Autonomous2();
+		// 		 break; 
+		// 	 case "Autonomus3": autonomousCommand = new Autonomous3();
+		//  		break; 	 
+		//  default:
+		//  		autonomousCommand = new Autonomous();
+		//  break;}
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
